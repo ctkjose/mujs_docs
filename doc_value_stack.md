@@ -28,9 +28,13 @@ MuJS provides multiple functions to get values. The most basic one is the functi
 
 The function `js_getglobal` takes as arguments the `js_State` and the name of the symbol that we want to find in the global scope.
 
-
-
-js_getglobal(state, "name");
+**Example:**
+```C
+	js_getglobal(state, "name");
+	if( js_isstring(state, -1) ){ //-1 the last value added to the value stack
+		printf( "The global variable name has a value of %s", js_tostring(state, -1) );
+	}
+```
 
 ### Testing the type of a value in the stack. ###
 
