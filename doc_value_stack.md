@@ -55,3 +55,18 @@ The function `js_getglobal` takes as arguments the `js_State` and the name of th
 | `int js_iscoercible(js_State *J, int idx)` | Returns 1 if value can be coerced |
 | `int js_iserror(js_State *J, int idx)` | Returns 1 if value is an error object |
 | `int js_isuserdata(js_State *J, int idx)` | Returns 1 if value is an object with user data |
+
+### Getting a C value. ###
+
+Once a value is available and referenced in the Value Stack you can use one of the **GET** function to get a **C** primitive value.
+
+| Function | Description |
+| -- | -- |
+| `int js_toboolean(js_State *J, int idx)` | Returns integer 0 or 1 |
+| `double js_tonumber(js_State *J, int idx)` |  |
+| `int js_tointeger(js_State *J, int idx)` |  |
+| `int js_toint32(js_State *J, int idx)` |  |
+| `unsigned int js_touint32(js_State *J, int idx)` |  |
+| `short js_toint16(js_State *J, int idx)` |  |
+| `unsigned short js_touint16(js_State *J, int idx)` | Returns an unsigned short |
+| `const char *js_tostring(js_State *J, int idx)` |  Returns a CHAR * |
