@@ -112,7 +112,7 @@ js_call(js, 0); /*currently the function is on top of stack*/
 #define SCOPE_GLOBAL(js) (js->GE)
 
 js_Object *private_code;
-private_code = jsV_newobject(js, JS_CSTRING, NULL);
+private_code = jsV_newobject(js, JS_COBJECT, NULL);
 
 js_Environment *parent_scope;
 js_Environment *scope;
