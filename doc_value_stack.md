@@ -70,3 +70,61 @@ Once a value is available and referenced in the Value Stack you can use one of t
 | `short js_toint16(js_State *J, int idx)` |  |
 | `unsigned short js_touint16(js_State *J, int idx)` | Returns an unsigned short |
 | `const char *js_tostring(js_State *J, int idx)` |  Returns a CHAR * |
+
+## Running javascript code ##
+
+Using `js_loadeval` or `js_loadstring` you can run code in the global scope.
+
+The functions `js_loadeval` or `js_loadstring` do not actually run your code.
+
+They create a new `function` (js_Function) and push it to the top of the value stack.
+
+We use `js_call` to execute the function in the stack.
+
+To use `js_call` you have to push additional values to the stack
+```c
+const char *code = "var n = \"Jose\";";
+js_loadeval(js, code); /*this is similar to eval*/
+js_pushundefined(js); /*push value of this*/
+js_call(js, 0); /*currently the function is on top of stack*/
+```
+
+### Adding a variable to the current scope ###
+
+```c
+#define SCOPE_OBJECT_CURRENT(js) (js->E->variables)
+#define SCOPE_OBJECT_GLOBAL(js) (js->GE->variables)
+
+js_pushstring(js,"Jose Cuevas");
+jsR_defproperty(js, SCOPE_CURRENT(js), "name", JS_DONTENUM | JS_DONTCONF, stackidx(js, -1), NULL, NULL);
+
+const char *code = "n = name;";
+js_loadeval(js, code); /*this is similar to eval*/
+js_pushundefined(js); /*push value of this*/
+js_call(js, 0); /*currently the function is on top of stack*/
+
+```
+
+### Creating a Scope ###
+
+```c
+#define SCOPE_CURRENT(js) (js->E)
+#define SCOPE_GLOBAL(js) (js->GE)
+
+js_Object *private_code;
+private_code = jsV_newobject(js, JS_CSTRING, NULL);
+
+js_Environment *parent_scope;
+js_Environment *scope;
+
+parent_scope = SCOPE_CURRENT(js);
+
+scope = jsScopeCreate(js, private_code, parent_scope);
+
+jsScopePush(js, scope); /*set our new Scope
+
+/*... code executed under new scope */
+
+jsScopeRestore(js); /* exit our scope */
+
+```
